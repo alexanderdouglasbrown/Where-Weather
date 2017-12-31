@@ -8,7 +8,7 @@
 import UIKit
 
 protocol WeatherDelegate {
-    func weatherResults(data : WeatherDetails)
+    func weatherResults(data : WeatherDetails, isUserLocation: Bool)
 }
 
 struct WeatherDetails: Codable {
@@ -39,14 +39,13 @@ class WeatherData{
     init(){
     }
 
-    func getWeatherData(latitude: Double, longitude: Double) {
+    func getWeatherData(latitude: Double, longitude: Double, isUserLocation: Bool) {
         let apiKey = valueForAPIKey(named: "OPEN_WEATHER_MAP")
-        let url = URL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)")!
-        
+        let url = URL(string: "http://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(apiKey)&units=imperial")!
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let data = data,
                 let result = try? JSONDecoder().decode(WeatherDetails.self, from: data) {
-                self.delegate?.weatherResults(data: result)
+                    self.delegate?.weatherResults(data: result, isUserLocation: isUserLocation)
             }
         }.resume()
     }

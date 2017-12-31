@@ -11,11 +11,6 @@ import MapKit
 
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate ,WeatherDelegate {
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var infoView: UIView!
-    @IBOutlet weak var infoViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var cityLabel: UILabel!
-    @IBOutlet weak var conditionLabel: UILabel!
-    @IBOutlet weak var tempLabel: UILabel!
     
     class CustomPointAnnotation: MKPointAnnotation {
         var imageName: String!
@@ -23,6 +18,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     let locationManager = CLLocationManager()
     let weatherData = WeatherData()
+    var currentAnnotation = CustomPointAnnotation()
     
     var initialZoomIn = true
     
@@ -33,11 +29,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         locationManager.delegate = self
         weatherData.delegate = self
         mapView.delegate = self
-        
-        infoViewBottomConstraint.constant = infoView.frame.height
-        infoView.layer.cornerRadius = 15
-        infoView.layer.masksToBounds = true
-        getLocation()
     }
     
     override func didReceiveMemoryWarning() {
@@ -47,15 +38,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func getLocation(){
-        
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.distanceFilter = 250
         locationManager.startUpdatingLocation()
-        
-    }
-    @IBAction func tapGesture(_ sender: Any) {
-        closeInfoPane()
     }
     
     @IBAction func mapLongPress(_ sender: UILongPressGestureRecognizer) {
@@ -65,36 +51,20 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
             UIImpactFeedbackGenerator().impactOccurred()
             
-            weatherData.getWeatherData(latitude: mapLocation.latitude, longitude: mapLocation.longitude)
+            weatherData.getWeatherData(latitude: mapLocation.latitude, longitude: mapLocation.longitude, isUserLocation: false)
         }
-    }
-    
-    func openInfoPane(){
-        DispatchQueue.main.async {
-            self.infoViewBottomConstraint.constant = 0
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        }
-    }
-    
-    func closeInfoPane(){
-        infoViewBottomConstraint.constant = infoView.frame.height
-        UIView.animate(withDuration: 0.4 , animations: {
-            self.view.layoutIfNeeded()
-        })
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let currentLocation = locations[locations.count - 1]
+        weatherData.getWeatherData(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude, isUserLocation: true)
+        
         if (initialZoomIn){
             initialZoomIn = false
-            //Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) {_ in
-            let currentLocation = locations[locations.count - 1]
+            mapView.selectAnnotation(mapView.userLocation, animated: true)
+            let currentLocation = locations[0]
             let viewRegion = MKCoordinateRegionMakeWithDistance(currentLocation.coordinate, 100_000, 100_000)
-            self.mapView.setRegion(viewRegion, animated: false)
-            
-            //self.weatherData.getWeatherData(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
-            //   }
+            self.mapView.setRegion(viewRegion, animated: true)
         }
     }
     
@@ -102,30 +72,30 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         initialZoomIn = false
     }
     
-    func weatherResults(data: WeatherDetails) {
-        DispatchQueue.main.async {
-            let tempK: Double = data.main.temp
-            let tempF: Double = ((9.0/5.0)*(tempK - 273.0) + 32.0)
-            let roundedTempF: Int = Int(round(tempF))
+    func weatherResults(data: WeatherDetails, isUserLocation: Bool) {
+        DispatchQueue.main.sync {
+            let roundedTempF: Int = Int(round(data.main.temp))
             
-//            self.cityLabel.text = data.name
-//            self.conditionLabel.text = data.weather[0].main
-//            self.tempLabel.text = "\(roundedTempF)"
-            
-            let annotationPoint = CustomPointAnnotation()
-            
-            annotationPoint.coordinate = CLLocationCoordinate2D(latitude: data.coord.lat, longitude: data.coord.lon)
-            annotationPoint.title = "\(data.weather[0].main), \(roundedTempF)°F"
-            annotationPoint.subtitle = "\(data.name)"
-            annotationPoint.imageName = "\(data.weather[0].icon).png"
-            
-            self.mapView.addAnnotation(annotationPoint)
-            
-            //self.openInfoPane()
+            if (isUserLocation){
+                mapView.userLocation.title = "\(data.weather[0].main), \(roundedTempF)°F"
+                mapView.userLocation.subtitle = "\(data.name)"
+            } else {
+                let annotationPoint = CustomPointAnnotation()
+                
+                annotationPoint.coordinate = CLLocationCoordinate2D(latitude: data.coord.lat, longitude: data.coord.lon)
+                annotationPoint.title = "\(data.weather[0].main), \(roundedTempF)°F"
+                annotationPoint.subtitle = "\(data.name)"
+                annotationPoint.imageName = "\(data.weather[0].icon).png"
+                
+                currentAnnotation = annotationPoint
+                
+                self.mapView.addAnnotation(annotationPoint)
+            }
         }
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
         if !(annotation is CustomPointAnnotation){
             return nil
         }
@@ -145,8 +115,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-        mapView.selectAnnotation(mapView.annotations[mapView.annotations.endIndex - 1], animated: true)
+        mapView.selectAnnotation(currentAnnotation, animated: true)
     }
     
+    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+        getLocation()
+    }
 }
 

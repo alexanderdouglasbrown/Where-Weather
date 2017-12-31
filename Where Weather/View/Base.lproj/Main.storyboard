@@ -23,72 +23,21 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <gestureRecognizers/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="iKD-Dh-Uy9" appends="YES" id="o6e-rG-M14"/>
-                                    <outletCollection property="gestureRecognizers" destination="QHk-9H-7ef" appends="YES" id="Ebn-HD-2is"/>
+                                    <outletCollection property="gestureRecognizers" destination="iKD-Dh-Uy9" appends="YES" id="mi1-8r-aji"/>
                                 </connections>
                             </mapView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iia-0J-Rgb">
-                                <rect key="frame" x="0.0" y="562" width="375" height="250"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="I5z-pV-mKB">
-                                        <rect key="frame" x="0.0" y="20" width="375" height="173"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="City" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVU-d3-7bA">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Condition" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J4g-Nj-W9I">
-                                                <rect key="frame" x="0.0" y="65" width="375" height="43"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Temp" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KqW-ls-Cdb">
-                                                <rect key="frame" x="0.0" y="130" width="375" height="43"/>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                                <color key="backgroundColor" red="0.28257665278629207" green="0.29112785506457817" blue="0.46502590673575128" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstItem="I5z-pV-mKB" firstAttribute="leading" secondItem="iia-0J-Rgb" secondAttribute="leading" id="4B8-fd-goH"/>
-                                    <constraint firstAttribute="trailing" secondItem="I5z-pV-mKB" secondAttribute="trailing" id="6Co-ds-nM5"/>
-                                    <constraint firstItem="I5z-pV-mKB" firstAttribute="top" secondItem="iia-0J-Rgb" secondAttribute="top" constant="20" id="8Dh-Q5-P76"/>
-                                    <constraint firstAttribute="height" constant="250" id="Vc0-S3-VWx"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="iia-0J-Rgb" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" id="3G8-jY-YYL"/>
-                            <constraint firstItem="iia-0J-Rgb" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="DJW-SO-tGp"/>
-                            <constraint firstItem="iia-0J-Rgb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="kAF-Jn-ieH"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="cityLabel" destination="cVU-d3-7bA" id="8tM-c8-cuY"/>
-                        <outlet property="conditionLabel" destination="J4g-Nj-W9I" id="A1C-F9-iuD"/>
-                        <outlet property="infoView" destination="iia-0J-Rgb" id="8Wh-Uv-RZB"/>
-                        <outlet property="infoViewBottomConstraint" destination="3G8-jY-YYL" id="Sc2-fl-WWv"/>
                         <outlet property="mapView" destination="4gz-BD-y9d" id="YEG-pb-xKE"/>
-                        <outlet property="tempLabel" destination="KqW-ls-Cdb" id="TDN-gJ-mf0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="QHk-9H-7ef">
-                    <connections>
-                        <action selector="tapGesture:" destination="BYZ-38-t0r" id="mLM-Md-hNG"/>
-                    </connections>
-                </tapGestureRecognizer>
                 <pongPressGestureRecognizer cancelsTouchesInView="NO" delaysTouchesBegan="YES" allowableMovement="10" minimumPressDuration="0.5" id="iKD-Dh-Uy9">
                     <connections>
-                        <action selector="mapLongPress:" destination="BYZ-38-t0r" id="gRc-hN-Tfi"/>
+                        <action selector="mapLongPress:" destination="BYZ-38-t0r" id="DQP-d1-6ky"/>
                     </connections>
                 </pongPressGestureRecognizer>
             </objects>
