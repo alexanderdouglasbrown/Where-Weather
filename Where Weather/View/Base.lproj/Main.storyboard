@@ -26,8 +26,20 @@
                                     <outletCollection property="gestureRecognizers" destination="iKD-Dh-Uy9" appends="YES" id="mi1-8r-aji"/>
                                 </connections>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5qg-0A-4fh">
+                                <rect key="frame" x="311" y="710" width="48" height="48"/>
+                                <viewLayoutGuide key="safeArea" id="ZAH-nP-N4l"/>
+                                <state key="normal" image="clear"/>
+                                <connections>
+                                    <action selector="btnClearMap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ag6-2o-Bn2"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="5qg-0A-4fh" secondAttribute="trailing" constant="16" id="RpU-ZS-z3e"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="5qg-0A-4fh" secondAttribute="bottom" constant="20" id="mWU-Y8-mnv"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
@@ -44,4 +56,7 @@
             <point key="canvasLocation" x="12" y="14.77832512315271"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="clear" width="48" height="48"/>
+    </resources>
 </document>
