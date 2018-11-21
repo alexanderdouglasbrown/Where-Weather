@@ -86,7 +86,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             initialZoomIn = false
             mapView.selectAnnotation(mapView.userLocation, animated: true)
             let currentLocation = locations[0]
-            let viewRegion = MKCoordinateRegionMakeWithDistance(currentLocation.coordinate, 100_000, 100_000)
+            let viewRegion = MKCoordinateRegion.init(center: currentLocation.coordinate, latitudinalMeters: 100_000, longitudinalMeters: 100_000)
             self.mapView.setRegion(viewRegion, animated: true)
         }
     }
